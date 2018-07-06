@@ -70,3 +70,37 @@ myButLast'''' [x] = error "List contains one element; there is not but last"
 myButLast'''' list
   | length (tail list) == 1 = head list
   | otherwise = myButLast'''' $ tail list
+
+
+
+------
+------
+------
+
+
+-- | Problem 3
+-- | (*) Find the K'th element of a list. The first element in the list is number 1.
+-- |
+-- | Example:
+-- |
+-- | * (element-at '(a b c d e) 3)
+-- | c
+-- | Example in Haskell:
+-- |
+-- | Prelude> elementAt [1,2,3] 2
+-- | 2
+-- | Prelude> elementAt "haskell" 5
+-- | 'e'
+elementAt :: [a] -> Int -> a
+elementAt (x:_)  1 =  x  -- * if 0 wanted; return the first element
+elementAt (_:xs) n =  elementAt xs  (n-1)
+
+
+elementAt' [] _ = error "Empty List"
+elementAt' (x:_) 1 = x
+elementAt' (_:xs) n
+  | n < 1 = error "index cannot be < 1"
+  | otherwise = elementAt' xs (n-1)
+
+elementAt'' [] _ = error "Empty List"
+elementAt'' xs n= last $ take n xs
