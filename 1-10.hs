@@ -104,3 +104,77 @@ elementAt' (_:xs) n
 
 elementAt'' [] _ = error "Empty List"
 elementAt'' xs n= last $ take n xs
+
+------
+------
+------
+
+-- |   Problem 4
+-- |   (*) Find the number of elements of a list.
+-- |
+-- |   Example in Haskell:
+-- |
+-- |   Prelude> myLength [123, 456, 789]
+-- |   3
+-- |   Prelude> myLength "Hello, world!"
+-- |   13
+myLength :: [a] -> Int
+myLength [] = 0
+myLength (x:xs) = 1 + myLength xs
+
+myLength' xs = sum $ replicate (length xs) 1
+
+myLength'' =  sum . map (\_ -> 1)
+
+------
+------
+------
+
+-- |   Problem 5
+-- |   (*) Reverse a list.
+-- |
+-- |   Example in Haskell:
+-- |
+-- |   Prelude> myReverse "A man, a plan, a canal, panama!"
+-- |   "!amanap ,lanac a ,nalp a ,nam A"
+-- |   Prelude> myReverse [1,2,3,4]
+-- |   [4,3,2,1]
+myReverse :: [a] -> [a]
+myReverse [x] = [x]
+myReverse (x:xs) = myReverse (xs) ++ [x]
+
+
+------
+------
+------
+
+-- | Problem 6
+-- | (*) Find out whether a list is a palindrome. A palindrome can be read forward or backward; e.g. (x a m a x).
+-- |
+-- | Example in Haskell:
+-- |
+-- | *Main> isPalindrome [1,2,3]
+-- | False
+-- | *Main> isPalindrome "madamimadam"
+-- | True
+-- | *Main> isPalindrome [1,2,4,8,16,8,4,2,1]
+-- | True
+isPalindrome :: (Ord a) => [a] -> Bool
+isPalindrome list =
+  list == reverse list
+
+
+
+isPalindrome' xs =
+  firstHalf xs == secondHalf xs
+  where
+    len  = length xs
+    n = div len 2
+    firstHalf  xs = take n xs
+    secondHalf xs = drop (n + mod len 2) xs
+
+
+
+------
+------
+------
