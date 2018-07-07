@@ -1,4 +1,4 @@
-{-- Take a look in Data.List;
+{-- Take a look at Data.List;
   -- It has got tons of useful functions you can learn from.
 --}
 -- | Problem 1
