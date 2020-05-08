@@ -1,6 +1,5 @@
-{-- Take a look at Data.List;
-  -- It has got tons of useful functions you can learn from.
---}
+-- * Take a look at Data.List;
+-- * t has got tons of useful functions you can learn from.
 -- | Problem 1
 -- | (*) Find the last element of a list.
 -- |
@@ -16,16 +15,19 @@
 -- * myLast _:xs = ... this gives and error
 -- * myLast (_:xs) = ... enclose pattern matching by ()
 
+
 -- 1.0: explicit recursion
 myLast :: [a] ->  a
 myLast [] = error "Empy List; there is no last element to return"
-myLast [x] = x -- | base case;
-myLast (_:xs) = myLast xs -- | recur until we come to [x] the base case
+myLast [x] = x --  base case;
+myLast (_:xs) = myLast xs --  recur until we come to [x] the base case
 
 -- 1.1: composing functions
+myLast' :: [c] -> c
 myLast' = head . reverse
 
 -- 1.2: using index
+myLast'' :: [c] -> c
 myLast'' [] = error "Empy List; there is no last element to return"
 myLast'' xs = xs !! (length xs -1)
 
@@ -35,6 +37,7 @@ myLast'' xs = xs !! (length xs -1)
 -- * flip: takes bi-function and two args (for the bi-fn) then it applies bi-fn
 --         on the two args but after swaping them.
 -- * (flip const) returns the second argument.
+myLast''' :: [c] -> c
 myLast''' xs = foldr1 (flip const) xs
 
 ------
@@ -54,22 +57,27 @@ myLast''' xs = foldr1 (flip const) xs
 -- | 'y'
 myButLast :: [a] -> a
 myButLast [] = error "Empty List"
-myButLast [x] = error "List contains one element; there is not but last"
+myButLast [_] = error "List contains one element; there is not but last"
 myButLast xs = xs !! (length xs -2)
 
+myButLast' :: [c] -> c
 myButLast' = myLast . init
 
+myButLast'' :: [c] -> c
 myButLast'' = head . tail . reverse
 
--- * If the tail is 1 element; return the head
+-- If the tail is 1 element; return the head
+myButLast''' :: [p] -> p
 myButLast''' [] =  error "Empty List"
-myButLast''' [x] = error "List contains one element; there is not but last"
+myButLast''' [_] = error "List contains one element; there is not but last"
 myButLast''' (x:xs)
   | length xs == 1 = x
   | otherwise = myButLast''' xs
 
+
+myButLast'''' :: [a] -> a
 myButLast'''' [] =  error "Empty List"
-myButLast'''' [x] = error "List contains one element; there is not but last"
+myButLast'''' [_] = error "List contains one element; there is not but last"
 myButLast'''' list
   | length (tail list) == 1 = head list
   | otherwise = myButLast'''' $ tail list
@@ -81,32 +89,35 @@ myButLast'''' list
 ------
 
 
--- | Problem 3
--- | (*) Find the K'th element of a list. The first element in the list is number 1.
--- |
--- | Example:
--- |
--- | * (element-at '(a b c d e) 3)
--- | c
--- | Example in Haskell:
--- |
--- | Prelude> elementAt [1,2,3] 2
--- | 2
--- | Prelude> elementAt "haskell" 5
--- | 'e'
+-- Problem 3
+-- (*) Find the K'th element of a list. The first element in the list is number 1.
+-- 
+-- Example:
+-- 
+-- * (element-at '(a b c d e) 3)
+-- c
+-- Example in Haskell:
+-- 
+-- Prelude> elementAt [1,2,3] 2
+-- 2
+-- Prelude> elementAt "haskell" 5
+-- 'e'
 elementAt :: [a] -> Int -> a
-elementAt (x:_)  1 =  x  -- * if 0 wanted; return the first element
+elementAt [] _     = error "Empty List"
+elementAt (x:_)  1 =  x  -- if 0 wanted; return the first element
 elementAt (_:xs) n =  elementAt xs  (n-1)
 
 
+elementAt' :: [a] -> Int -> a
 elementAt' [] _ = error "Empty List"
 elementAt' (x:_) 1 = x
 elementAt' (_:xs) n
   | n < 1 = error "index cannot be < 1"
   | otherwise = elementAt' xs (n-1)
 
+elementAt'' :: [a] -> Int -> a
 elementAt'' [] _ = error "Empty List"
-elementAt'' xs n= last $ take n xs
+elementAt'' xs n = last $ take n xs
 
 ------
 ------
@@ -123,10 +134,13 @@ elementAt'' xs n= last $ take n xs
 -- |   13
 myLength :: [a] -> Int
 myLength [] = 0
-myLength (x:xs) = 1 + myLength xs
+myLength (_:xs) = 1 + myLength xs
 
+
+myLength' :: [a] -> Int
 myLength' xs = sum $ replicate (length xs) 1
 
+myLength'' :: [a] -> Int
 myLength'' =  sum . map (\_ -> 1)
 
 ------
@@ -143,6 +157,7 @@ myLength'' =  sum . map (\_ -> 1)
 -- |   Prelude> myReverse [1,2,3,4]
 -- |   [4,3,2,1]
 myReverse :: [a] -> [a]
+myReverse []  = []
 myReverse [x] = [x]
 myReverse (x:xs) = myReverse (xs) ++ [x]
 
@@ -167,14 +182,14 @@ isPalindrome list =
   list == reverse list
 
 
-
+isPalindrome' :: (Ord a) => [a] -> Bool
 isPalindrome' xs =
   firstHalf xs == secondHalf xs
   where
     len  = length xs
     n = div len 2
-    firstHalf  xs = take n xs
-    secondHalf xs = drop (n + mod len 2) xs
+    firstHalf  l = take n l
+    secondHalf l = drop (n + mod len 2) l
 
 ------
 ------
@@ -231,8 +246,8 @@ compress :: (Eq a) => [a] -> [a]
 compress [] = []
 compress [x] = [x]
 compress (x:xs)
-  | x == head xs      = compress xs  -- * Ignoring the duplicated x
-  | otherwise         = [x] ++ compress xs -- * Building up the un-duplicated x
+  | x == head xs      = compress xs  -- Ignoring the duplicated x
+  | otherwise         = [x] ++ compress xs -- Building up the un-duplicated x
 
 ------
 ------
@@ -259,20 +274,21 @@ pack (x:xs) = (x:takeWhile (==x) xs) : pack (dropWhile (==x) xs)
 ------
 
 
--- | Problem 10
--- | (*) Run-length encoding of a list. Use the result of problem P09 to
--- | implement the so-called run-length encoding data compression method.
--- | Consecutive duplicates of elements are encoded as lists (N E)
--- | where N is the number of duplicates of the element E.
--- |
--- | Example:
--- |
--- | * (encode '(a a a a b c c a a d e e e e))
--- | ((4 A) (1 B) (2 C) (2 A) (1 D)(4 E))
--- | Example in Haskell:
--- |
--- | encode "aaaabccaadeeee"
--- | [(4,'a'),(1,'b'),(2,'c'),(2,'a'),(1,'d'),(4,'e')]
+-- Problem 10
+-- (*) Run-length encoding of a list. Use the result of problem P09 to
+-- implement the so-called run-length encoding data compression method.
+-- Consecutive duplicates of elements are encoded as lists (N E)
+-- where N is the number of duplicates of the element E.
+-- 
+-- Example:
+-- 
+-- * (encode '(a a a a b c c a a d e e e e))
+-- ((4 A) (1 B) (2 C) (2 A) (1 D)(4 E))
+-- Example in Haskell:
+-- 
+-- encode "aaaabccaadeeee"
+-- [(4,'a'),(1,'b'),(2,'c'),(2,'a'),(1,'d'),(4,'e')]
+encode :: Eq b => [b] -> [(Int, b)]
 encode list = f $ pack list
   where
     f l = map (\xs -> (length xs, head xs)) l
