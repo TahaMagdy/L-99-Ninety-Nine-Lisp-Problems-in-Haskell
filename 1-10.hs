@@ -32,49 +32,41 @@ myLast4 xs = foldr1 (flip const) xs
 
 
 
--- | Problem 2
--- | (*) Find the last but one element of a list.
--- |
--- | (Note that the Lisp transcription of this problem is incorrect.)
--- |
--- | Example in Haskell:
--- |
--- | λ> myButLast [1,2,3,4]
--- | 3
--- | λ> myButLast ['a'..'z']
--- | 'y'
-myButLast :: [a] -> a
-myButLast [] = error "Empty List"
-myButLast [_] = error "List contains one element; there is not but last"
-myButLast xs = xs !! (length xs -2)
+-- | Problem 2: Find the last but one element of a list.
+myButLast1 :: [a] -> a
+myButLast1 [] = error "Empty List"
+myButLast1 [_] = error "List contains one element; there is not but last"
+myButLast1 xs = xs !! (length xs -2)
 
-myButLast' :: [c] -> c
-myButLast' = myLast . init
+-- myButLast is the last of the init
+myButLast2 :: [c] -> c
+myButLast2 = myLast1 . init
 
-myButLast'' :: [c] -> c
-myButLast'' = head . tail . reverse
+myButLast3 :: [c] -> c
+myButLast3 = head . tail . reverse
 
--- If the tail is 1 element; return the head
-myButLast''' :: [p] -> p
-myButLast''' [] =  error "Empty List"
-myButLast''' [_] = error "List contains one element; there is not but last"
-myButLast''' (x:xs)
+-- myButLast is the head of a list in the form (x:y:[])
+myButLast4 :: [p] -> p
+myButLast4 [] =  error "Empty List"
+myButLast4 [_] = error "List contains one element; there is not but last"
+myButLast4 (x:xs)
   | length xs == 1 = x
-  | otherwise = myButLast''' xs
+  | otherwise = myButLast4 xs
 
+myButLast5 :: [a] -> a
+myButLast5 [] = error "[]"
+myButLast5 [_] = error "[_]"
+myButLast5 (j:_:[]) = j
+myButLast5 (_:xs) = myButLast5 xs
 
-myButLast'''' :: [a] -> a
-myButLast'''' [] =  error "Empty List"
-myButLast'''' [_] = error "List contains one element; there is not but last"
-myButLast'''' list
+myButLast6 :: [a] -> a
+myButLast6 [] =  error "Empty List"
+myButLast6 [_] = error "List contains one element; there is not but last"
+myButLast6 list
   | length (tail list) == 1 = head list
-  | otherwise = myButLast'''' $ tail list
+  | otherwise = myButLast5 $ tail list
 
 
-
-------
-------
-------
 
 
 -- Problem 3
