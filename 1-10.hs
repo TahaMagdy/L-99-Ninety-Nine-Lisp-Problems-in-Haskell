@@ -1,49 +1,36 @@
 -- https://github.com/TahaMagdy/L-99-Ninety-Nine-Lisp-Problems-in-Haskell/blob/master/1-10.hs
+-- https://wiki.haskell.org/H-99:_Ninety-Nine_Haskell_Problems
 -- * Take a look at Data.List;
--- * t has got tons of useful functions you can learn from.
--- | Problem 1
--- | (*) Find the last element of a list.
--- |
--- | (Note that the Lisp transcription of this problem is incorrect.)
--- |
--- | Example in Haskell:
--- |
--- | Prelude> myLast [1,2,3,4]
--- | 4
--- | Prelude> myLast ['x','y','z']
--- | 'z'
--- NOTES
--- * myLast _:xs = ... this gives and error
--- * myLast (_:xs) = ... enclose pattern matching by ()
 
+-- | Problem 1: Find the last element of a list.
+-- Note: myLast _:xs = ... this gives and error
+-- Note: myLast (_:xs) = ... enclose pattern matching by ()
 
--- 1.0: explicit recursion
-myLast :: [a] ->  a
-myLast [] = error "Empy List; there is no last element to return"
-myLast [x] = x --  base case;
-myLast (_:xs) = myLast xs --  recur until we come to [x] the base case
+-- Explicit Recursion
+myLast1 :: [a] ->  a
+myLast1 [] = error "Empy List; there is no last element to return"
+myLast1 [x] = x --  base case;
+myLast1 (_:xs) = myLast1 xs --  recur until we come to [x] the base case
 
--- 1.1: composing functions
-myLast' :: [c] -> c
-myLast' = head . reverse
+-- The last element is the (head) of a (reverse)
+myLast2 :: [c] -> c
+myLast2 = head . reverse
 
--- 1.2: using index
-myLast'' :: [c] -> c
-myLast'' [] = error "Empy List; there is no last element to return"
-myLast'' xs = xs !! (length xs -1)
+-- Using index
+myLast3 :: [c] -> c
+myLast3 [] = error "Empy List; there is no last element to return"
+myLast3 xs = xs !! (length xs -1)
 
-
--- 1.3: using foldr1
+-- Using foldr1
+-- ComeBackHere
 -- * const: takes two arguments and returns the first arg, always.
 -- * flip: takes bi-function and two args (for the bi-fn) then it applies bi-fn
 --         on the two args but after swaping them.
 -- * (flip const) returns the second argument.
-myLast''' :: [c] -> c
-myLast''' xs = foldr1 (flip const) xs
+myLast4 :: [c] -> c
+myLast4 xs = foldr1 (flip const) xs
 
-------
-------
-------
+
 
 -- | Problem 2
 -- | (*) Find the last but one element of a list.
@@ -52,9 +39,9 @@ myLast''' xs = foldr1 (flip const) xs
 -- |
 -- | Example in Haskell:
 -- |
--- | Prelude> myButLast [1,2,3,4]
+-- | λ> myButLast [1,2,3,4]
 -- | 3
--- | Prelude> myButLast ['a'..'z']
+-- | λ> myButLast ['a'..'z']
 -- | 'y'
 myButLast :: [a] -> a
 myButLast [] = error "Empty List"
@@ -99,9 +86,9 @@ myButLast'''' list
 -- c
 -- Example in Haskell:
 -- 
--- Prelude> elementAt [1,2,3] 2
+-- λ> elementAt [1,2,3] 2
 -- 2
--- Prelude> elementAt "haskell" 5
+-- λ> elementAt "haskell" 5
 -- 'e'
 elementAt :: [a] -> Int -> a
 elementAt [] _     = error "Empty List"
@@ -129,9 +116,9 @@ elementAt'' xs n = last $ take n xs
 -- |
 -- |   Example in Haskell:
 -- |
--- |   Prelude> myLength [123, 456, 789]
+-- |   λ> myLength [123, 456, 789]
 -- |   3
--- |   Prelude> myLength "Hello, world!"
+-- |   λ> myLength "Hello, world!"
 -- |   13
 myLength :: [a] -> Int
 myLength [] = 0
@@ -153,9 +140,9 @@ myLength'' =  sum . map (\_ -> 1)
 -- |
 -- |   Example in Haskell:
 -- |
--- |   Prelude> myReverse "A man, a plan, a canal, panama!"
+-- |   λ> myReverse "A man, a plan, a canal, panama!"
 -- |   "!amanap ,lanac a ,nalp a ,nam A"
--- |   Prelude> myReverse [1,2,3,4]
+-- |   λ> myReverse [1,2,3,4]
 -- |   [4,3,2,1]
 myReverse :: [a] -> [a]
 myReverse []  = []
