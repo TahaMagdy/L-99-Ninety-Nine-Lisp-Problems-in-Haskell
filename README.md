@@ -1,0 +1,9 @@
+- head
+- last
+- tail
+- init
+- take theFirstN fromList
+- reverse
+- length
+- replicate something nTime
+- takeWhile
