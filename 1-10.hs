@@ -5,7 +5,6 @@
 -- | Problem 1: Find the last element of a list.
 -- Note: myLast _:xs = ... this gives and error
 -- Note: myLast (_:xs) = ... enclose pattern matching by ()
-
 -- Explicit Recursion
 myLast1 :: [a] ->  a
 myLast1 [] = error "Empy List; there is no last element to return"
@@ -29,7 +28,6 @@ myLast3 xs = xs !! (length xs -1)
 -- * (flip const) returns the second argument.
 myLast4 :: [c] -> c
 myLast4 xs = foldr1 (flip const) xs
-
 
 
 -- | Problem 2: Find the last but one element of a list.
@@ -67,37 +65,17 @@ myButLast6 list
   | otherwise = myButLast5 $ tail list
 
 
+-- Problem 3: Find the K'th element of a list.
+elementAt1 :: [a] -> Int -> a
+elementAt1 [] _     = error "Empty List"
+elementAt1 (x:_)  1 =  x
+elementAt1 (_:xs) n 
+  | n <= 0 = error "Index cannot be a negative number"
+  | otherwise = elementAt1 xs (n-1) -- remove (n-1) heads
 
-
--- Problem 3
--- (*) Find the K'th element of a list. The first element in the list is number 1.
--- 
--- Example:
--- 
--- * (element-at '(a b c d e) 3)
--- c
--- Example in Haskell:
--- 
--- λ> elementAt [1,2,3] 2
--- 2
--- λ> elementAt "haskell" 5
--- 'e'
-elementAt :: [a] -> Int -> a
-elementAt [] _     = error "Empty List"
-elementAt (x:_)  1 =  x  -- if 0 wanted; return the first element
-elementAt (_:xs) n =  elementAt xs  (n-1)
-
-
-elementAt' :: [a] -> Int -> a
-elementAt' [] _ = error "Empty List"
-elementAt' (x:_) 1 = x
-elementAt' (_:xs) n
-  | n < 1 = error "index cannot be < 1"
-  | otherwise = elementAt' xs (n-1)
-
-elementAt'' :: [a] -> Int -> a
-elementAt'' [] _ = error "Empty List"
-elementAt'' xs n = last $ take n xs
+elementAt2 :: [a] -> Int -> a
+elementAt2 [] _ = error "Empty List"
+elementAt2 xs n = last $ take n xs
 
 ------
 ------
