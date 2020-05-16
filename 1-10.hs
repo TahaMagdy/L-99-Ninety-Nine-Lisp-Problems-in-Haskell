@@ -1,3 +1,4 @@
+-- https://github.com/TahaMagdy/L-99-Ninety-Nine-Lisp-Problems-in-Haskell/blob/master/1-10.hs
 -- * Take a look at Data.List;
 -- * t has got tons of useful functions you can learn from.
 -- | Problem 1
